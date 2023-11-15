@@ -1,4 +1,4 @@
-package com.rentalhive.entities;
+package com.rentalhive.models.entities;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

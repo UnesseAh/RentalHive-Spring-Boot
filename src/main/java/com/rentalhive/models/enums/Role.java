@@ -1,4 +1,4 @@
-package com.rentalhive.entities.enums;
+package com.rentalhive.models.enums;
 
 public enum Role {
     Manager, Agent, Client
