@@ -37,7 +37,6 @@ public class MainExceptionHandler {
         return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
     }
 
-
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ResponseMessage> globalExceptionHandler(Exception ex, WebRequest request) {
         ResponseMessage message = new ResponseMessage(

@@ -16,6 +16,8 @@ public record UserDTO(
         @NotBlank(message = "Email is required")
         @Email(message = "Email foramt is invalid")
         String email,
+        @NotBlank(message = "Phone number is required")
+        @Pattern(regexp = "^\\+?[0-9]{10,13}$", message = "Phone number format is invalid")
         String phoneNumber,
         @Pattern(regexp = "^(Agent|Manager|Client)$", message = "Role must be Agent,Manager or Client")
         String role,
