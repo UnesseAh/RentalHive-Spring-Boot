@@ -21,6 +21,7 @@ public class MainExceptionHandler {
         return new ResponseEntity<ResponseMessage>(message, HttpStatus.NOT_FOUND);
     }
 
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ResponseMessage> globalExceptionHandler(Exception ex, WebRequest request) {
         ResponseMessage message = new ResponseMessage(

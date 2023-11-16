@@ -2,14 +2,14 @@ package com.rentalhive.handlers.response;
 
 import java.time.LocalDateTime;
 
-public class ResponseMessage<T> {
+public class ResponseMessage {
     private int statusCode;
     private LocalDateTime timestamp;
     private String message;
 
-    private T data;
+    private Object data;
 
-    public ResponseMessage(int statusCode,T data,String message) {
+    public ResponseMessage(int statusCode,Object data,String message) {
         this.statusCode = statusCode;
         this.timestamp = LocalDateTime.now();
         this.data = data;
@@ -31,7 +31,7 @@ public class ResponseMessage<T> {
     public String getMessage() {
         return message;
     }
-    public T getData() {
+    public Object getData() {
         return data;
     }
 

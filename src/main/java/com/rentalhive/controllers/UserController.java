@@ -19,21 +19,20 @@ import java.util.List;
 @RequestMapping("/api")
 public class UserController {
     UserService userService;
-    @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
     }
 
     @GetMapping("/users")
-    public ResponseEntity<ResponseMessage<?>> getAllTutorials() {
+    public ResponseEntity<ResponseMessage> getAllTutorials() {
         List<UserDTO> users = userService.getAllUsers();
         if (users.isEmpty()) {
-            return new ResponseEntity<>(new ResponseMessage<Object>(HttpStatus.NOT_FOUND.value(),HttpStatus.NOT_FOUND.toString()), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new ResponseMessage(HttpStatus.NOT_FOUND.value(),HttpStatus.NOT_FOUND.toString()), HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(new ResponseMessage<List<UserDTO>>(HttpStatus.OK.value(),users,HttpStatus.OK.toString()), HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseMessage(HttpStatus.OK.value(),users,HttpStatus.OK.toString()), HttpStatus.OK);
     }
     @PostMapping("/users")
-    public ResponseEntity<ResponseMessage<UserDTO>> createUser(@Validated @RequestBody UserDTO userDTO) {
+    public ResponseEntity<ResponseMessage> createUser(@Validated @RequestBody UserDTO userDTO) {
         UserDTO user_dto_created = userService.saveUser(userDTO);
         return new ResponseEntity<>(new ResponseMessage(HttpStatus.CREATED.value(), user_dto_created,HttpStatus.CREATED.toString()), HttpStatus.CREATED);
     }

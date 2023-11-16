@@ -14,7 +14,6 @@ import java.util.Objects;
 @Service
 public class UserServiceImpl implements UserService {
     UserRepository userRepository;
-    @Autowired
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
@@ -24,12 +23,9 @@ public class UserServiceImpl implements UserService {
     }
     @Override
     public UserDTO saveUser(@Validated UserDTO userDTO) {
-        try {
+
             User user = userRepository.save(userDTO.toUser());
             return UserDTO.fromUser(user);
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to save user", e);
-        }
     }
     @Override
     public UserDTO updateUser(UserDTO user) {
@@ -41,12 +37,10 @@ public class UserServiceImpl implements UserService {
     }
     @Override
     public List<UserDTO> getAllUsers() {
-        try{
+
             List<UserDTO> users = new ArrayList<>();
             userRepository.findAll().forEach(user -> users.add(UserDTO.fromUser(user)));
             return users;
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to get all users", e);
-        }
+
     }
 }
