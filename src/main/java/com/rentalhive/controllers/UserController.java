@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +33,7 @@ public class UserController {
         return new ResponseEntity<>(new ResponseMessage(HttpStatus.OK.value(),users,HttpStatus.OK.toString()), HttpStatus.OK);
     }
     @PostMapping("/users")
-    public ResponseEntity<ResponseMessage> createUser(@Validated @RequestBody UserDTO userDTO) {
+    public ResponseEntity<ResponseMessage> createUser(@Valid @RequestBody UserDTO userDTO) {
         UserDTO user_dto_created = userService.saveUser(userDTO);
         return new ResponseEntity<>(new ResponseMessage(HttpStatus.CREATED.value(), user_dto_created,HttpStatus.CREATED.toString()), HttpStatus.CREATED);
     }
