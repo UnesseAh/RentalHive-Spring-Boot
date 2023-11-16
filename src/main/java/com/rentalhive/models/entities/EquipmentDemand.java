@@ -21,6 +21,8 @@ public class EquipmentDemand {
     private Demand demand;
     @ManyToOne
     private Equipment equipment;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
     @CreatedDate
     private LocalDateTime createdAt;
     @LastModifiedDate
