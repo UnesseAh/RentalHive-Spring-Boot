@@ -5,6 +5,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -21,6 +22,8 @@ public class Equipment {
     private String description;
     @ManyToOne
     private Model model;
+    @OneToMany(mappedBy = "equipment", fetch = FetchType.LAZY)
+    private List<EquipmentDemand> equipmentDemands;
     @CreatedDate
     private LocalDateTime createdAt;
     @LastModifiedDate

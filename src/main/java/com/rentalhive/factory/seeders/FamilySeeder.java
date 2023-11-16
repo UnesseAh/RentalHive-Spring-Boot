@@ -15,7 +15,7 @@ public class FamilySeeder {
         this.familyFaker = familyFaker;
    }
    public void seed() {
-       List<String> names =  List.of("ForkLift","Loader","ScissorLift","BoomLift","Telehandler","Excavator","SkidSteer","Backhoe","Bulldozer","Compactor","Crane","DumpTruck","MotorGrader","Paver","Roller","Sweeper","Tractor","Truck","WheelLoader","Generator","AirCompressor","LightTower","Trencher","Attachments","Other");
+       List<String> names =  List.of("ForkLift","Loader","ScissorLift","BoomLift","Telehandler","Excavator","SkidSteer","Backhoe","Bulldozer","Compactor","Crane","DumpTruck","MotorGrader","Paver","Roller","Sweeper","Tractor","Truck","WheelLoader","Generator","AirCompressor","Other");
         names.forEach(name -> {
             familyRepository.save(familyFaker.makeFamily(name));
         });

@@ -22,7 +22,7 @@ public class MainSeeder implements CommandLineRunner {
         userSeeder.seed(5);
         familySeeder.seed();
         modelSeeder.seed();
-        equipmentSeeder.seed(3);
+        equipmentSeeder.seed(1);
 
     }
 
