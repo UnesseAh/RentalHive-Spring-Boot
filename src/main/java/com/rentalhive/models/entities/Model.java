@@ -8,8 +8,6 @@ import lombok.Builder;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.validation.annotation.Validated;
-
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -30,7 +28,8 @@ import java.util.List;
 @Entity
 @Builder
 public class Model {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotBlank(message = "Name is mandatory")
