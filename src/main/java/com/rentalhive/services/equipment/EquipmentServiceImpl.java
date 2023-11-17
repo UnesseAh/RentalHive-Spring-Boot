@@ -1,17 +1,23 @@
 package com.rentalhive.services.equipment;
 
 import com.rentalhive.models.entities.Model;
+import com.rentalhive.repositories.EquipmentRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
+@Service
+public class EquipmentServiceImpl implements EquipmentService {
 
-public class EquipmentServiceImpl implements Equipment{
+    public EquipmentServiceImpl(EquipmentRepository equipmentRepository) {
+    }
+
     @Override
-    public Equipment createEquipment(Equipment equipment) {
+    public EquipmentService createEquipment(EquipmentService equipment) {
         return null;
     }
 
     @Override
-    public Equipment updateEquipment(Equipment equipment) {
+    public EquipmentService updateEquipment(EquipmentService equipment) {
         return null;
     }
 
@@ -21,32 +27,32 @@ public class EquipmentServiceImpl implements Equipment{
     }
 
     @Override
-    public Equipment getEquipmentById(Long id) {
+    public EquipmentService getEquipmentById(Long id) {
         return null;
     }
 
     @Override
-    public List<Equipment> getAllEquipments() {
+    public List<EquipmentService> getAllEquipments() {
         return null;
     }
 
     @Override
-    public Equipment findEquipmentByName(String name) {
+    public EquipmentService findEquipmentByName(String name) {
         return null;
     }
 
     @Override
-    public List<Equipment> searchEquipmentsBySerialNumber(String serialNumber) {
+    public List<EquipmentService> searchEquipmentsBySerialNumber(String serialNumber) {
         return null;
     }
 
     @Override
-    public List<Equipment> searchEquipmentsByModel(Model model) {
+    public List<EquipmentService> searchEquipmentsByModel(Model model) {
         return null;
     }
 
     @Override
-    public List<Equipment> searchEquipmentsByPriceRange(Double miniPrice, Double maxPrice) {
+    public List<EquipmentService> searchEquipmentsByPriceRange(Double miniPrice, Double maxPrice) {
         return null;
     }
 }
