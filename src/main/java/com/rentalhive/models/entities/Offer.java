@@ -21,7 +21,7 @@ public class Offer {
     private Demand demand;
     @OneToOne
     private Quote quote;
-    private Boolean accepted;
+    private String description;
     @CreatedDate
     private LocalDateTime createdAt;
     @LastModifiedDate
