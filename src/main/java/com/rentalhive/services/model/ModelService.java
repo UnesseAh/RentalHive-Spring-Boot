@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ModelService {
     Model createModel(Model model);
-    Model updateModel(Model model);
+    Model updateModel(Long modelId, Model model);
     void deleteModel(Long id);
     Model getModelById(Long id);
     List<Model> gelAllModels();

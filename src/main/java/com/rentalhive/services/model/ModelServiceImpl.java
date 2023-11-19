@@ -16,27 +16,30 @@ public class ModelServiceImpl implements ModelService{
 
     @Override
     public Model createModel(Model model) {
-        return null;
+        return modelRepository.save(model);
     }
 
     @Override
-    public Model updateModel(Model model) {
-        return null;
+    public Model updateModel(Long modelId, Model modelDetails) {
+        Model model = modelRepository.findById(modelId).get();
+        model.setName(modelDetails.getName());
+        model.setFamily(modelDetails.getFamily());
+        return modelRepository.save(model);
     }
 
     @Override
     public void deleteModel(Long id) {
-
+        modelRepository.deleteById(id);
     }
 
     @Override
     public Model getModelById(Long id) {
-        return null;
+        return modelRepository.findById(id).get();
     }
 
     @Override
     public List<Model> gelAllModels() {
-        return null;
+        return modelRepository.findAll();
     }
 
     @Override
