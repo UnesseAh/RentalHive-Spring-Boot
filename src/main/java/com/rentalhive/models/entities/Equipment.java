@@ -40,7 +40,7 @@ public class Equipment {
     @PositiveOrZero(message = "Price must be a positive or zero value")
     private Double price;
 
-    @NotEmpty(message = "Serial number is mandatory")
+    @NotBlank(message = "Serial number is mandatory")
     private String serialNumber;
 
     @NotBlank(message = "Name is required")

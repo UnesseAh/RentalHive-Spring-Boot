@@ -9,24 +9,24 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/equipment")
+@RequestMapping("/api/equipments")
 public class EquipmentController {
 
     @Autowired
     private EquipmentService equipmentService;
 
-    @GetMapping("/")
-    public List<Equipment> getAllEquipments(){
-        return equipmentService.getAllEquipments();
-    }
-
-    @PostMapping("/")
+    @PostMapping
     public Equipment createEquipment(@RequestBody Equipment equipment){
         return equipmentService.createEquipment(equipment);
     }
 
+    @GetMapping
+    public List<Equipment> getAllEquipments(){
+        return equipmentService.getAllEquipments();
+    }
+
     @PutMapping("/{id}")
-    public Equipment updateEquipment(@PathVariable(value = "id") Long id, Equipment equipment){
+    public Equipment updateEquipment(@PathVariable(value = "id") Long id, @RequestBody Equipment equipment){
         return equipmentService.updateEquipment(id, equipment);
     }
 
