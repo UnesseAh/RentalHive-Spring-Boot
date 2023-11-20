@@ -5,13 +5,14 @@ import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
-@Getter
-@Setter
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Builder
+@Data
 public class Equipment {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,6 +22,8 @@ public class Equipment {
     private String description;
     @ManyToOne
     private Model model;
+    @OneToMany(mappedBy = "equipment", fetch = FetchType.LAZY)
+    private List<EquipmentDemand> equipmentDemands;
     @CreatedDate
     private LocalDateTime createdAt;
     @LastModifiedDate

@@ -18,6 +18,10 @@ public class Demand {
     private Long id;
     @OneToMany(mappedBy = "demand")
     private List<EquipmentDemand> equipmentDemands;
+    private String title;
+    private String description;
+    @ManyToOne()
+    private User user;
     @CreatedDate
     private LocalDateTime createdAt;
     @LastModifiedDate
