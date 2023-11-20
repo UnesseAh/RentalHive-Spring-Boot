@@ -1,5 +1,8 @@
 package com.rentalhive.models.dto;
+import com.rentalhive.models.entities.Demand;
 import com.rentalhive.models.entities.EquipmentDemand;
+import com.rentalhive.models.entities.User;
+import com.rentalhive.models.enums.Role;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,26 +11,30 @@ import java.time.LocalDateTime;
 import java.util.List;
 @Getter
 @Setter
-public class DemandDTO {
+public record DemandDTO(
+        String title,
+
+        String description,
+
+        UserDTO userDTO,
+
+        LocalDateTime createdAt,
+
+        LocalDateTime modifiedAt
+) {
 
 
-
-        private Long id;
-
-        @NotNull(message = "Equipment demands are required")
-        private List<EquipmentDemand> equipmentDemands;
-
-        private LocalDateTime createdAt;
-        private LocalDateTime modifiedAt;
-
-    public void setId(Long id) {
-            this.id = id;
-        }
-    public void setCreatedAt(LocalDateTime createdAt) {
-            this.createdAt = createdAt;
-        }
-
-
+    public static DemandDTO fromDemand(Demand demand) {
+        return new DemandDTO(demand.getTitle(),demand.getDescription(),UserDTO.fromUser(demand.getUser()),demand.getCreatedAt(),demand.getModifiedAt());
     }
+    public Demand toDemand() {
+        return new Demand().builder()
+                .title(this.title)
+                .description(this.description)
+                .user(this.userDTO().toUser())
+                .createdAt(LocalDateTime.now())
+                .build();
+    }
+}
 
 
