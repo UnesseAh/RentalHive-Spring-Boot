@@ -1,16 +1,14 @@
 package com.rentalhive.models.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
@@ -24,6 +22,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@EntityListeners({AuditingEntityListener.class})
+@Table(name = "equipments")
 @Entity
 public class Equipment {
     @Id
@@ -48,9 +48,11 @@ public class Equipment {
     @ManyToOne
     private Model model;
 
+    @JsonIgnore
     @CreatedDate
     private LocalDateTime createdAt;
 
+    @JsonIgnore
     @LastModifiedDate
     private LocalDateTime modifiedAt;
 

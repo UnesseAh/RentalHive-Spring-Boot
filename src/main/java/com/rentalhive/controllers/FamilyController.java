@@ -2,6 +2,7 @@ package com.rentalhive.controllers;
 
 import com.rentalhive.models.entities.Family;
 import com.rentalhive.services.family.FamilyService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -9,19 +10,17 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/families")
 public class FamilyController {
-    private final FamilyService familyService;
+    @Autowired
+    private FamilyService familyService;
 
-    public FamilyController(FamilyService familyService) {
-        this.familyService = familyService;
-    }
 
-    @GetMapping("/")
+    @GetMapping
     public List<Family> getAllFamilies(){
         return familyService.gelAllFamilies();
     }
 
-    @PostMapping("/")
-    public Family createFamily(Family family){
+    @PostMapping
+    public Family createFamily(@RequestBody  Family family){
         return familyService.createFamily(family);
     }
 
