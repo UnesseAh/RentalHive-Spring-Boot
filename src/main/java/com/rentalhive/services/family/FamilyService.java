@@ -10,5 +10,5 @@ public interface FamilyService {
     void deleteFamily(Long id);
     Family getFamilyById(Long id);
     List<Family> gelAllFamilies();
-    List<Family> searchFamilyByName(String name);
+    Family searchFamilyByName(String name);
 }

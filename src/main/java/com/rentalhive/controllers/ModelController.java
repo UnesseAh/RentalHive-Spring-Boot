@@ -2,6 +2,7 @@ package com.rentalhive.controllers;
 
 import com.rentalhive.models.entities.Model;
 import com.rentalhive.services.model.ModelService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -9,11 +10,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/models")
 public class ModelController {
-    private final ModelService modelService;
 
-    public ModelController(ModelService modelService) {
-        this.modelService = modelService;
-    }
+    @Autowired
+    private ModelService modelService;
 
     @GetMapping("/")
     public List<Model> getAllModels(){

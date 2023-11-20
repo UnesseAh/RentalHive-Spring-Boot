@@ -42,7 +42,7 @@ public class FamilyServiceImpl implements FamilyService{
     }
 
     @Override
-    public List<Family> searchFamilyByName(String name) {
-        return null;
+    public Family searchFamilyByName(String name) {
+        return familyRepository.findFamilyByName(name);
     }
 }

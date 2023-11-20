@@ -3,6 +3,7 @@ package com.rentalhive.controllers;
 import com.rentalhive.models.entities.Equipment;
 import com.rentalhive.services.equipment.EquipmentService;
 import com.rentalhive.services.equipment.EquipmentServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,11 +11,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/equipment")
 public class EquipmentController {
-    private final EquipmentService equipmentService;
 
-    public EquipmentController(EquipmentServiceImpl equipmentService) {
-        this.equipmentService = equipmentService;
-    }
+    @Autowired
+    private EquipmentService equipmentService;
 
     @GetMapping("/")
     public List<Equipment> getAllEquipments(){
