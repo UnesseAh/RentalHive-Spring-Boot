@@ -11,6 +11,7 @@ import java.util.List;
 
 @Entity
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Demand {
@@ -20,7 +21,7 @@ public class Demand {
     private List<EquipmentDemand> equipmentDemands;
     private String title;
     private String description;
-    @ManyToOne()
+    @ManyToOne(cascade=CascadeType.ALL)
     private User user;
     @CreatedDate
     private LocalDateTime createdAt;
