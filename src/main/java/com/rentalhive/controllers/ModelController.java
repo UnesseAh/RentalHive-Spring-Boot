@@ -8,20 +8,25 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/models")
+@RequestMapping("/api/models")
 public class ModelController {
 
     @Autowired
     private ModelService modelService;
 
-    @GetMapping("/")
+    @PostMapping
+    public Model createModel(@RequestBody Model model){
+        return modelService.createModel(model);
+    }
+
+    @GetMapping
     public List<Model> getAllModels(){
         return modelService.gelAllModels();
     }
 
-    @PostMapping("/")
-    public Model createModel(@RequestBody Model model){
-        return modelService.createModel(model);
+    @GetMapping("{id}")
+    public Model getOneModel(@PathVariable(value = "id") Long id){
+        return modelService.getModelById(id);
     }
 
     @PutMapping("/{id}")
