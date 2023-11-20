@@ -7,7 +7,9 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Calendar;
 
 @Getter
 @Setter
@@ -21,8 +23,8 @@ public class EquipmentDemand {
     private Demand demand;
     @ManyToOne
     private Equipment equipment;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
     @CreatedDate
     private LocalDateTime createdAt;
     @LastModifiedDate

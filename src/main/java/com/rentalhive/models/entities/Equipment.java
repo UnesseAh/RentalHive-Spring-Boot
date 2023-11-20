@@ -7,12 +7,12 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Getter
-@Setter
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Builder
+@Data
 public class Equipment {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
