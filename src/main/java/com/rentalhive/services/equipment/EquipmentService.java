@@ -1,5 +1,7 @@
 package com.rentalhive.services.equipment;
 
+import com.rentalhive.models.dto.EquipmentResponseDTO;
+import com.rentalhive.models.dto.EquipmentSearchDTO;
 import com.rentalhive.models.entities.Equipment;
 import com.rentalhive.models.entities.Model;
 
@@ -10,7 +12,7 @@ public interface EquipmentService {
     Equipment updateEquipment(Long equipmentId, Equipment equipment);
     void deleteEquipment(Long id);
     Equipment getEquipmentById(Long id);
-    List<Equipment> getAllEquipments();
+    List<EquipmentResponseDTO>  getEquipments(EquipmentSearchDTO equipmentSearchDTO);
     Equipment findEquipmentByName(String name);
     Equipment searchEquipmentsBySerialNumber(String serialNumber);
     List<Equipment> searchEquipmentsByModel(Model model);

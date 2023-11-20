@@ -29,16 +29,16 @@ public class EquipmentController {
         return equipmentService.createEquipment(equipment);
     }
 
-//    @GetMapping
-//    public ResponseEntity<ResponseMessage> getEquipements(@RequestBody EquipmentSearchDTO equipmentSearchDTO){
-//        List<EquipmentResponseDTO> equipments = equipmentService.getEquipements(equipmentSearchDTO);
-//        if(equipments.isEmpty()){
-//            return ResponseEntity.badRequest().body(new ResponseMessage(400,equipments,"No Equipments Found"));
-//        }
-//        else{
-//            return ResponseEntity.ok().body(new ResponseMessage(200,equipments,"Equipments Found"));
-//        }
-//    }
+    @GetMapping
+    public ResponseEntity<ResponseMessage> getEquipements(@RequestBody EquipmentSearchDTO equipmentSearchDTO){
+        List<EquipmentResponseDTO> equipments = equipmentService.getEquipments(equipmentSearchDTO);
+        if(equipments.isEmpty()){
+            return ResponseEntity.badRequest().body(new ResponseMessage(400,equipments,"No Equipments Found"));
+        }
+        else{
+            return ResponseEntity.ok().body(new ResponseMessage(200,equipments,"Equipments Found"));
+        }
+    }
 
 
     @PutMapping("/{id}")
