@@ -2,6 +2,7 @@ package com.rentalhive.services.model;
 
 import com.rentalhive.models.entities.Family;
 import com.rentalhive.models.entities.Model;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 

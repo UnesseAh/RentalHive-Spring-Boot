@@ -16,7 +16,7 @@ public class ModelController {
 
     @PostMapping
     public Model createModel(@RequestBody Model model){
-        return modelService.createModel(model);
+         return modelService.createModel(model);
     }
 
     @GetMapping

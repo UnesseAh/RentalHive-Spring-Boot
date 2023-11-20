@@ -1,5 +1,7 @@
 package com.rentalhive.services.model;
 
+import com.rentalhive.handlers.exceptionHandler.MainExceptionHandler;
+import com.rentalhive.handlers.exceptionHandler.ResourceNotFoundException;
 import com.rentalhive.models.entities.Family;
 import com.rentalhive.models.entities.Model;
 import com.rentalhive.repositories.ModelRepository;
@@ -21,20 +23,25 @@ public class ModelServiceImpl implements ModelService{
 
     @Override
     public Model updateModel(Long modelId, Model modelDetails) {
-        Model model = modelRepository.findById(modelId).get();
+        Model model = modelRepository.findById(modelId)
+                .orElseThrow(()-> new ResourceNotFoundException("Model not found for id : (" + modelId + ")"));
         model.setName(modelDetails.getName());
         model.setFamily(modelDetails.getFamily());
         return modelRepository.save(model);
     }
 
     @Override
-    public void deleteModel(Long id) {
-        modelRepository.deleteById(id);
+    public void deleteModel(Long id) throws ResourceNotFoundException {
+        Model model = modelRepository.findById(id)
+                .orElseThrow(()-> new ResourceNotFoundException("Model not found for id : (" + id + ")"));
+        modelRepository.delete(model);
     }
 
     @Override
-    public Model getModelById(Long id) {
-        return modelRepository.findById(id).get();
+    public Model getModelById(Long id) throws ResourceNotFoundException {
+        Model model = modelRepository.findById(id)
+                .orElseThrow(()-> new ResourceNotFoundException("Model not found for id : (" + id + ")"));
+        return model;
     }
 
     @Override

@@ -10,7 +10,7 @@ import com.rentalhive.models.dto.CountEquipmentDemandDTO;
 import com.rentalhive.models.dto.EquipmentResponseDTO;
 import com.rentalhive.models.dto.EquipmentSearchDTO;
 import com.rentalhive.models.dto.UserDTO;
-import com.rentalhive.services.equipement.EquipmentService;
+import com.rentalhive.services.equipment.EquipmentService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,17 +29,17 @@ public class EquipmentController {
         return equipmentService.createEquipment(equipment);
     }
 
-    @GetMapping
-    public ResponseEntity<ResponseMessage> getEquipements(@RequestBody EquipmentSearchDTO equipmentSearchDTO){
-        List<EquipmentResponseDTO> equipments = equipmentService.getEquipements(equipmentSearchDTO);
-        if(equipments.isEmpty()){
-            return ResponseEntity.badRequest().body(new ResponseMessage(400,equipments,"No Equipments Found"));
-        }
-        else{
-            return ResponseEntity.ok().body(new ResponseMessage(200,equipments,"Equipments Found"));
-        }
+//    @GetMapping
+//    public ResponseEntity<ResponseMessage> getEquipements(@RequestBody EquipmentSearchDTO equipmentSearchDTO){
+//        List<EquipmentResponseDTO> equipments = equipmentService.getEquipements(equipmentSearchDTO);
+//        if(equipments.isEmpty()){
+//            return ResponseEntity.badRequest().body(new ResponseMessage(400,equipments,"No Equipments Found"));
+//        }
+//        else{
+//            return ResponseEntity.ok().body(new ResponseMessage(200,equipments,"Equipments Found"));
+//        }
+//    }
 
-    }
 
     @PutMapping("/{id}")
     public Equipment updateEquipment(@PathVariable(value = "id") Long id, @RequestBody Equipment equipment){
@@ -47,7 +47,7 @@ public class EquipmentController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteEquipment(@PathVariable(value = "id") Long id){
+    public void deleteEquipment(@PathVariable(value = "id") Long id) {
         equipmentService.deleteEquipment(id);
     }
 }
