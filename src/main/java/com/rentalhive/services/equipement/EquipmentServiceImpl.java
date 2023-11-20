@@ -1,6 +1,5 @@
 package com.rentalhive.services.equipement;
 
-import com.rentalhive.models.dto.CountEquipmentDemandDTO;
 import com.rentalhive.models.dto.EquipmentResponseDTO;
 import com.rentalhive.models.dto.EquipmentSearchDTO;
 import com.rentalhive.models.entities.Equipment;
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 @Service
 public class EquipmentServiceImpl implements EquipmentService{

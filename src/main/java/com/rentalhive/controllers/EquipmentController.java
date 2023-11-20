@@ -1,10 +1,8 @@
 package com.rentalhive.controllers;
 
 import com.rentalhive.handlers.response.ResponseMessage;
-import com.rentalhive.models.dto.CountEquipmentDemandDTO;
 import com.rentalhive.models.dto.EquipmentResponseDTO;
 import com.rentalhive.models.dto.EquipmentSearchDTO;
-import com.rentalhive.models.dto.UserDTO;
 import com.rentalhive.services.equipement.EquipmentService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

@@ -25,12 +25,12 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    public ResponseEntity<ResponseMessage> getAllTutorials() {
-        List<UserDTO> users = userService.getAllUsers();
+    public ResponseEntity<ResponseMessage> getAllTutorials() {List<UserDTO> users = userService.getAllUsers();
         if (users.isEmpty()) {
             return new ResponseEntity<>(new ResponseMessage(HttpStatus.NOT_FOUND.value(),HttpStatus.NOT_FOUND.toString()), HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(new ResponseMessage(HttpStatus.OK.value(),users,HttpStatus.OK.toString()), HttpStatus.OK);
+
     }
     @PostMapping("/users")
     public ResponseEntity<ResponseMessage> createUser(@Valid @RequestBody UserDTO userDTO) {
