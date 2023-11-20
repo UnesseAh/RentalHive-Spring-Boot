@@ -19,10 +19,10 @@ public class MainSeeder implements CommandLineRunner {
     }
     @Override
     public void run(String... args) throws Exception {
-        userSeeder.seed(5);
-        familySeeder.seed();
-        modelSeeder.seed();
-        equipmentSeeder.seed(1);
+//        userSeeder.seed(5);
+//        familySeeder.seed();
+//        modelSeeder.seed();
+//        equipmentSeeder.seed(1);
 
     }
 
