@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -25,12 +26,12 @@ public class EquipmentController {
     private EquipmentService equipmentService;
 
     @PostMapping
-    public Equipment createEquipment(@RequestBody Equipment equipment){
+    public Equipment createEquipment(@RequestBody @Valid Equipment equipment){
         return equipmentService.createEquipment(equipment);
     }
 
     @GetMapping
-    public ResponseEntity<ResponseMessage> getEquipements(@RequestBody EquipmentSearchDTO equipmentSearchDTO){
+    public ResponseEntity<ResponseMessage> getEquipments(@RequestBody EquipmentSearchDTO equipmentSearchDTO){
         List<EquipmentResponseDTO> equipments = equipmentService.getEquipments(equipmentSearchDTO);
         if(equipments.isEmpty()){
             return ResponseEntity.badRequest().body(new ResponseMessage(400,equipments,"No Equipments Found"));
@@ -42,12 +43,17 @@ public class EquipmentController {
 
 
     @PutMapping("/{id}")
-    public Equipment updateEquipment(@PathVariable(value = "id") Long id, @RequestBody Equipment equipment){
+    public Equipment updateEquipment(@PathVariable(value = "id") Long id, @RequestBody @Valid Equipment equipment){
         return equipmentService.updateEquipment(id, equipment);
     }
 
     @DeleteMapping("/{id}")
     public void deleteEquipment(@PathVariable(value = "id") Long id) {
         equipmentService.deleteEquipment(id);
+    }
+
+    @GetMapping("/{name}")
+    public Equipment findEquipmentByName(@PathVariable(value = "name") String name){
+        return equipmentService.findEquipmentByName(name);
     }
 }
