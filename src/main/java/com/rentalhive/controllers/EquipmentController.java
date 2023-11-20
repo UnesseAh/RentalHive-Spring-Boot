@@ -28,8 +28,8 @@ public class EquipmentController {
     }
 
     @GetMapping
-    public ResponseEntity<ResponseMessage> getEquipements(@RequestBody EquipmentSearchDTO equipmentSearchDTO){
-        List<EquipmentResponseDTO> equipments = equipmentService.getEquipments(equipmentSearchDTO);
+    public ResponseEntity<ResponseMessage> getEquipements(){
+        List<EquipmentResponseDTO> equipments = equipmentService.getEquipments();
         if(equipments.isEmpty()){
             return ResponseEntity.badRequest().body(new ResponseMessage(400,equipments,"No Equipments Found"));
         }

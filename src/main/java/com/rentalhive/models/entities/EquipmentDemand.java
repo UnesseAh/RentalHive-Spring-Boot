@@ -1,8 +1,5 @@
 package com.rentalhive.models.entities;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -16,6 +13,7 @@ import java.util.Calendar;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Builder
 public class EquipmentDemand {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
