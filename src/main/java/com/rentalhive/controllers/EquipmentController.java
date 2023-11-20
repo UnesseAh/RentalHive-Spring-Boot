@@ -5,8 +5,6 @@ import com.rentalhive.models.entities.Equipment;
 import com.rentalhive.services.equipment.EquipmentService;
 import com.rentalhive.services.equipment.EquipmentServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import com.rentalhive.handlers.response.ResponseMessage;
-import com.rentalhive.models.dto.CountEquipmentDemandDTO;
 import com.rentalhive.models.dto.EquipmentResponseDTO;
 import com.rentalhive.models.dto.EquipmentSearchDTO;
 import com.rentalhive.models.dto.UserDTO;
