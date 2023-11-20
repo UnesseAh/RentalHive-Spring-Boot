@@ -11,14 +11,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.OneToMany;
-import javax.persistence.FetchType;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -29,7 +22,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @EntityListeners({AuditingEntityListener.class})
-@Table(name = "families")
+@Table(name = "families", uniqueConstraints = {@UniqueConstraint(columnNames = {"name"})})
 @Entity
 public class Family {
     @Id

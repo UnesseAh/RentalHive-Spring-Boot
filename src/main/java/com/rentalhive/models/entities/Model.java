@@ -11,15 +11,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.EntityListeners;
-import javax.persistence.Table;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.FetchType;
+import javax.persistence.*;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -32,7 +24,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @EntityListeners({AuditingEntityListener.class})
-@Table(name = "models")
+@Table(name = "models", uniqueConstraints = {@UniqueConstraint(columnNames = {"name"})})
 @Entity
 public class Model {
     @Id
