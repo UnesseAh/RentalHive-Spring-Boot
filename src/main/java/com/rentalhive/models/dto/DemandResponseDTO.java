@@ -1,22 +1,23 @@
 package com.rentalhive.models.dto;
 
 import com.rentalhive.models.entities.Demand;
-import com.rentalhive.models.entities.User;
 
-import java.time.LocalDateTime;
+import java.util.List;
 
 public record DemandResponseDTO(
         String title,
-
         String description,
-
-        UserDTO userDTO,
-
-        LocalDateTime createdAt,
-
-        LocalDateTime modifiedAt
+        UserDTO user,
+        String status,
+        List<EquipmentDemandResponseDTO> equipmentDemands
 ) {
-    public static DemandResponseDTO fromDemand(Demand demand) {
-        return new DemandResponseDTO(demand.getTitle(),demand.getDescription(),UserDTO.fromUser(demand.getUser()),demand.getCreatedAt(),demand.getModifiedAt());
+    public static DemandResponseDTO fromDemand(Demand demand){
+        return new DemandResponseDTO(
+                demand.getTitle(),
+                demand.getDescription(),
+                UserDTO.fromUser(demand.getUser()),
+                demand.getStatus().toString(),
+                demand.getEquipmentDemands().stream().map(EquipmentDemandResponseDTO::fromEquipmentDemand).toList()
+        );
     }
 }

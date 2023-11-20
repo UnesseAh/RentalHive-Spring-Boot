@@ -13,6 +13,9 @@ public interface EquipmentRepository extends JpaRepository<Equipment, Long> {
     Equipment findBySerialNumber(String name);
     List<Equipment> findByModel(Model model);
     List<Equipment> findByPriceBetween(Double min, Double max);
+    List<Equipment> findAllByIdIn( List<Long> ids);
+
+
     @Query("SELECT eq FROM Equipment eq WHERE (eq.model.family.name = :familyName OR :familyName IS NULL ) AND (eq.model.name = :modelName OR :modelName IS NULL)")
     List<Equipment> getEquipmentByFamilyNameAndModelName(
             @Param("familyName") String familyName,

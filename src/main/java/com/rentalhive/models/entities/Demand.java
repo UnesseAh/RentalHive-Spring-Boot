@@ -1,5 +1,6 @@
 package com.rentalhive.models.entities;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.rentalhive.models.enums.Status;
 import lombok.*;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.annotation.CreatedDate;
@@ -11,18 +12,19 @@ import java.util.List;
 
 @Entity
 @Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Demand {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToMany(mappedBy = "demand")
+    @OneToMany(mappedBy = "demand", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<EquipmentDemand> equipmentDemands;
     private String title;
     private String description;
-    @ManyToOne(cascade=CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     private User user;
+    private Status status;
     @CreatedDate
     private LocalDateTime createdAt;
     @LastModifiedDate
