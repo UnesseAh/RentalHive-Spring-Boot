@@ -23,6 +23,9 @@ spring:
     hibernate:
       dialect: org.hibernate.dialect.MySQL5Dialect
       ddl-auto: create
+  liquibase:
+    enabled: false
+    change-log: db/master.xml
 
 
 

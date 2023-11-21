@@ -29,6 +29,19 @@ public class DemandController {
     }
     @GetMapping()
     public ResponseEntity getAllDemands(){
-        return ResponseEntity.ok(demandService.getAllDemands());
+        return ResponseEntity.ok(new ResponseMessage(HttpStatus.OK.value(), demandService.getAllDemands(),HttpStatus.OK.getReasonPhrase()));
     }
+    @PutMapping("/{demandId}/accept")
+    public ResponseEntity<DemandResponseDTO> acceptDemand(@PathVariable Long demandId){
+        return ResponseEntity.ok(demandService.acceptDemand(demandId));
+    }
+    @PutMapping("/{demandId}/reject")
+    public ResponseEntity<DemandResponseDTO> rejectDemand(@PathVariable Long demandId){
+        return ResponseEntity.ok(demandService.rejectDemand(demandId));
+    }
+    @PutMapping("/{demandId}")
+public ResponseEntity<DemandResponseDTO> updateDemand(@PathVariable Long demandId, @Valid @RequestBody DemandRequestDTO demandRequestDTO){
+        return ResponseEntity.ok(demandService.updateDemand(demandId, demandRequestDTO));
+    }
+
 }
