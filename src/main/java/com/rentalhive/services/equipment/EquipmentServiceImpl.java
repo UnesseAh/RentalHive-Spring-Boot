@@ -89,14 +89,18 @@ public class EquipmentServiceImpl implements EquipmentService {
 
     @Override
     public void deleteEquipment(Long id) {
-        Equipment equipment = equipmentRepository.findById(id)
-                        .orElseThrow(()-> new ResourceNotFoundException("No equipment with id :" + id));
+        if(equipmentRepository.findById(id).isEmpty()){
+            throw new ResourceNotFoundException("No equipment exist with id : " + id);
+        }
         equipmentRepository.deleteById(id);
     }
 
     @Override
-    public Equipment getEquipmentById(Long id) {
-        Equipment equipment = equipmentRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("No equipment with id :" + id));
+    public Optional<Equipment> getEquipmentById(Long id) {
+        Optional<Equipment> equipment = equipmentRepository.findById(id);
+        if(equipment.isEmpty()){
+            throw new ResourceNotFoundException("No equipment exist with id : " + id);
+        }
         return equipment;
     }
 
