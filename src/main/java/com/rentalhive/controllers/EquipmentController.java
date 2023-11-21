@@ -2,21 +2,17 @@ package com.rentalhive.controllers;
 
 import com.rentalhive.handlers.response.ResponseMessage;
 import com.rentalhive.models.entities.Equipment;
+import com.rentalhive.models.entities.Model;
 import com.rentalhive.services.equipment.EquipmentService;
-import com.rentalhive.services.equipment.EquipmentServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import com.rentalhive.handlers.response.ResponseMessage;
-import com.rentalhive.models.dto.CountEquipmentDemandDTO;
 import com.rentalhive.models.dto.EquipmentResponseDTO;
 import com.rentalhive.models.dto.EquipmentSearchDTO;
-import com.rentalhive.models.dto.UserDTO;
-import com.rentalhive.services.equipment.EquipmentService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/equipments")
@@ -53,7 +49,17 @@ public class EquipmentController {
     }
 
     @GetMapping("/{name}")
-    public Equipment findEquipmentByName(@PathVariable(value = "name") String name){
+    public Optional<Equipment> findEquipmentByName(@PathVariable(value = "name") String name){
         return equipmentService.findEquipmentByName(name);
+    }
+
+    @GetMapping("/{serial-number}")
+    public Optional<Equipment> findEquipmentBySerialNumber(@PathVariable(value = "serial-number") String serialNumber){
+        return equipmentService.searchEquipmentsBySerialNumber(serialNumber);
+    }
+
+    @GetMapping("/{model}")
+    public List<Equipment> findEquipmentByModel(@PathVariable(value = "model") @RequestBody Model model){
+        return equipmentService.searchEquipmentsByModel(model);
     }
 }
