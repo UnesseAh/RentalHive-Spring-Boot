@@ -13,7 +13,7 @@ public interface EquipmentService {
     Equipment updateEquipment(Long equipmentId, Equipment equipment);
     void deleteEquipment(Long id);
     Optional<Equipment> getEquipmentById(Long id);
-    List<EquipmentResponseDTO>  getEquipments(EquipmentSearchDTO equipmentSearchDTO);
+    Equipment  getAllEquipments(Equipment equipment);
     Optional<Equipment> findEquipmentByName(String name);
     Optional<Equipment> searchEquipmentsBySerialNumber(String serialNumber);
     List<Equipment> searchEquipmentsByModel(Model model);

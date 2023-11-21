@@ -10,6 +10,7 @@ import com.rentalhive.models.dto.EquipmentSearchDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.text.html.Option;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
@@ -27,14 +28,8 @@ public class EquipmentController {
     }
 
     @GetMapping
-    public ResponseEntity<ResponseMessage> getEquipments(@RequestBody EquipmentSearchDTO equipmentSearchDTO){
-        List<EquipmentResponseDTO> equipments = equipmentService.getEquipments(equipmentSearchDTO);
-        if(equipments.isEmpty()){
-            return ResponseEntity.badRequest().body(new ResponseMessage(400,equipments,"No Equipments Found"));
-        }
-        else{
-            return ResponseEntity.ok().body(new ResponseMessage(200,equipments,"Equipments Found"));
-        }
+    public Equipment getEquipments(@RequestBody Equipment equipment){
+        return equipmentService.getAllEquipments(equipment);
     }
 
 

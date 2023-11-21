@@ -30,25 +30,8 @@ public class EquipmentServiceImpl implements EquipmentService {
     }
 
     @Override
-    public List<EquipmentResponseDTO> getEquipments(@Valid EquipmentSearchDTO equipmentSearchDTO) {
-        if(equipmentSearchDTO.endDate() != null || equipmentSearchDTO.startDate() != null){
-            List<EquipmentDemand> equipmentDemand = equipmentDemandRepository.getEquipmentDemandByFamilyModelAndRange(equipmentSearchDTO.familyName(),equipmentSearchDTO.modelName(),equipmentSearchDTO.startDate(),equipmentSearchDTO.endDate());
-            List<Equipment> equipments = equipmentRepository.getEquipmentByFamilyNameAndModelName(equipmentSearchDTO.familyName(),equipmentSearchDTO.modelName());
-            List<Equipment> availableEquipments = new ArrayList<>();
-            equipments.forEach(equipment -> {
-                boolean isAvailable = true;
-                for (EquipmentDemand demand: equipmentDemand){
-                    if (demand.getEquipment().getId() == equipment.getId()){ isAvailable = false;break;}
-                }
-                if (isAvailable){availableEquipments.add(equipment);}
-            });
-            return availableEquipments.stream().map(eq -> EquipmentResponseDTO.fromEquipment(eq)).toList();
-        }
-        else {
-            List<Equipment> equipments = new ArrayList<>();
-            equipments.addAll(equipmentRepository.getEquipmentByFamilyNameAndModelName(equipmentSearchDTO.familyName(),equipmentSearchDTO.modelName()));
-            return equipments.stream().map(eq -> EquipmentResponseDTO.fromEquipment(eq)).toList();
-        }
+    public Equipment getAllEquipments(Equipment equipment) {
+        return equipmentRepository.save(equipment);
     }
 
     @Override
