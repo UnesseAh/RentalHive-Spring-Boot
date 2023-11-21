@@ -14,8 +14,8 @@ public interface EquipmentService {
     void deleteEquipment(Long id);
     Optional<Equipment> getEquipmentById(Long id);
     List<EquipmentResponseDTO>  getEquipments(EquipmentSearchDTO equipmentSearchDTO);
-    Equipment findEquipmentByName(String name);
-    Equipment searchEquipmentsBySerialNumber(String serialNumber);
+    Optional<Equipment> findEquipmentByName(String name);
+    Optional<Equipment> searchEquipmentsBySerialNumber(String serialNumber);
     List<Equipment> searchEquipmentsByModel(Model model);
     List<Equipment> searchEquipmentsByPriceRange(Double miniPrice, Double maxPrice);
 

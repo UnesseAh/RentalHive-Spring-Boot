@@ -105,18 +105,30 @@ public class EquipmentServiceImpl implements EquipmentService {
     }
 
     @Override
-    public Equipment findEquipmentByName(String name) {
-        return equipmentRepository.findByName(name);
+    public Optional<Equipment> findEquipmentByName(String name) {
+        Optional<Equipment> equipment = Optional.ofNullable(equipmentRepository.findByName(name));
+        if(equipment.isEmpty()){
+            throw new ResourceNotFoundException("No equipment exist with name : " + name);
+        }
+        return equipment;
     }
 
     @Override
-    public Equipment searchEquipmentsBySerialNumber(String serialNumber) {
-        return equipmentRepository.findBySerialNumber(serialNumber);
+    public Optional<Equipment> searchEquipmentsBySerialNumber(String serialNumber) {
+        Optional<Equipment> equipment = Optional.ofNullable(equipmentRepository.findBySerialNumber(serialNumber));
+        if(equipment.isEmpty()){
+            throw new ResourceNotFoundException("No equipment exist with serial number : " + serialNumber);
+        }
+        return equipment;
     }
 
     @Override
     public List<Equipment> searchEquipmentsByModel(Model model) {
-        return equipmentRepository.findByModel(model);
+        List<Equipment> equipment = equipmentRepository.findByModel(model);
+        if(equipment.isEmpty()){
+            throw new ResourceNotFoundException("No equipment exist with model : " + model.getName());
+        }
+        return equipment;
     }
 
     @Override
