@@ -31,4 +31,7 @@ public class DemandController {
     public ResponseEntity getAllDemands(){
         return ResponseEntity.ok(demandService.getAllDemands());
     }
+
+
 }
+
