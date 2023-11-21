@@ -35,6 +35,7 @@ public class MainExceptionHandler {
         result.put("errors", errors);
 
         return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
+
     }
 
     @ExceptionHandler(Exception.class)

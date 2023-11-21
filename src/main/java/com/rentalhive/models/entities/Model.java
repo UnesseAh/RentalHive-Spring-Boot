@@ -24,7 +24,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @EntityListeners({AuditingEntityListener.class})
-@Table(name = "models", uniqueConstraints = {@UniqueConstraint(columnNames = {"name"})})
+@Table(name = "models")
 @Entity
 public class Model {
     @Id
