@@ -70,11 +70,20 @@ public class EquipmentServiceImpl implements EquipmentService {
 
     @Override
     public Equipment updateEquipment(Long equipmentId, Equipment equipmentDetails) {
-        Equipment equipment = equipmentRepository.findById(equipmentId).get();
+        Equipment equipment = equipmentRepository.findById(equipmentId)
+                .orElseThrow(()->new ResourceNotFoundException("Equipment you want to update doesn't exist"));
+        validateEquipment(equipmentDetails);
+        Optional<Model> optionalModel = modelRepository.findById(equipmentDetails.getModel().getId());
+        Model equipmentModel = optionalModel.orElseThrow(() -> new ResourceNotFoundException("Model is not valid"));
+        if (equipmentModel == null ){
+            throw new ResourceNotFoundException("Model is not valid");
+        }
+        String serialNumber = generateUniqueSerialNumber();
         equipment.setName(equipmentDetails.getName());
         equipment.setDescription(equipmentDetails.getDescription());
         equipment.setPrice(equipmentDetails.getPrice());
         equipment.setModel(equipmentDetails.getModel());
+        equipment.setSerialNumber(serialNumber);
         return equipmentRepository.save(equipment);
     }
 
