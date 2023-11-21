@@ -66,8 +66,31 @@ public class DemandServiceImpl implements DemandService {
                 }
         );
         return true;
-
-
+    }
+    public DemandResponseDTO acceptDemand(Long demandId){
+        validateDemand(demandId);
+        Demand demand = demandRepository.findById(demandId).orElseThrow(() -> new RuntimeException("Demand not found"));
+        demand.setStatus(Status.ACCEPTED);
+        return DemandResponseDTO.fromDemand(demandRepository.save(demand));
+    }
+    public DemandResponseDTO rejectDemand(Long demandId){
+        Demand demand = demandRepository.findById(demandId).orElseThrow(() -> new RuntimeException("Demand not found"));
+        demand.setStatus(Status.REJECTED);
+        return DemandResponseDTO.fromDemand(demandRepository.save(demand));
+    }
+    public DemandResponseDTO updateDemand(Long demandId, @Valid DemandRequestDTO demandRequestDTO){
+        demandRepository.findById(demandId).orElseThrow(() -> new RuntimeException("Demand not found"));
+        List<Long> equipmentIds = demandRequestDTO.equipmentDemands().stream().map(EquipmentDemandRequestDTO::equipmentId).toList();
+        List<Equipment> equipmentList = equipmentRepository.findAllByIdIn(equipmentIds);
+        if(equipmentList.size() == equipmentIds.size() ){
+            Demand demand = demandRequestDTO.toDemand();
+            demand.setId(demandId);
+            List<EquipmentDemand> equipmentDemands = demandRequestDTO.equipmentDemands().stream().map(equipmentDemandRequestDTO -> equipmentDemandRequestDTO.toEquipmentDemand(demand, equipmentList.get(equipmentIds.indexOf(equipmentDemandRequestDTO.equipmentId())))).toList();
+            demand.setEquipmentDemands(equipmentDemands);
+            return DemandResponseDTO.fromDemand(demandRepository.save(demand));
+        }else{
+            throw new RuntimeException("Some Equipments not found");
+        }
     }
 
 

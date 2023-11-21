@@ -3,6 +3,7 @@ package com.rentalhive.models.dto;
 import com.rentalhive.models.entities.Demand;
 import com.rentalhive.models.entities.Equipment;
 import com.rentalhive.models.entities.EquipmentDemand;
+import jdk.jfr.Timestamp;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
@@ -10,7 +11,6 @@ import java.time.LocalDate;
 public record EquipmentDemandRequestDTO(
         @NotNull(message = "EquipmentId cannot be null")
         Long equipmentId,
-        @NotNull(message = "StartDate cannot be null")
         LocalDate startDate,
         @NotNull(message = "EndDate cannot be null")
         LocalDate endDate
