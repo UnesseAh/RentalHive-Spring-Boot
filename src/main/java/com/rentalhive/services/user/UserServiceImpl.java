@@ -1,15 +1,15 @@
 package com.rentalhive.services.user;
 
-import com.rentalhive.models.dto.UserDTO;
+import com.rentalhive.handlers.exceptionHandler.ResourceNotFoundException;
+import com.rentalhive.controllers.vm.UserVM;
 import com.rentalhive.models.entities.User;
+import com.rentalhive.models.enums.Role;
 import com.rentalhive.repositories.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -18,29 +18,25 @@ public class UserServiceImpl implements UserService {
         this.userRepository = userRepository;
     }
     @Override
-    public UserDTO getUserById(Long id) {
-        return null;
+    public User createUser(User user) {
+        user.setRole(Role.Client);
+        return userRepository.save(user);
     }
     @Override
-    public UserDTO saveUser(@Validated UserDTO userDTO) {
+    public User getUserById(Long id) {
+        return userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User id: " + id + " not found"));
+    }
+    @Override
+    public List<User> getAllUsers() {
+        List<User> users = new ArrayList<>();
+        userRepository.findAll().forEach(users::add);
+        return users;
+    }
+    @Override
+    public User updateUser(Long id,User user) {
+        getUserById(id);
+        user.setId(id);
+        return userRepository.save(user);
+    }
 
-            User user = userRepository.save(userDTO.toUser());
-            return UserDTO.fromUser(user);
-    }
-    @Override
-    public UserDTO updateUser(UserDTO user) {
-        return null;
-    }
-    @Override
-    public boolean deleteUser(Long id) {
-        return false;
-    }
-    @Override
-    public List<UserDTO> getAllUsers() {
-
-            List<UserDTO> users = new ArrayList<>();
-            userRepository.findAll().forEach(user -> users.add(UserDTO.fromUser(user)));
-            return users;
-
-    }
 }

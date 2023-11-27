@@ -1,10 +1,8 @@
 package com.rentalhive.models.entities;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.rentalhive.models.enums.Status;
+import com.rentalhive.models.enums.DemandStatus;
 import lombok.*;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -18,15 +16,19 @@ import java.util.List;
 public class Demand {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToMany(mappedBy = "demand", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "demand")
     private List<EquipmentDemand> equipmentDemands;
+    @OneToMany(mappedBy = "demand")
+    private List<Quote> quotes;
     private String title;
     private String description;
     @ManyToOne(cascade = CascadeType.ALL)
     private User user;
-    private Status status;
-    @CreatedDate
+    @OneToOne
+    private Contract contract;
+    private DemandStatus status;
+    @CreationTimestamp
     private LocalDateTime createdAt;
-    @LastModifiedDate
+    @UpdateTimestamp
     private LocalDateTime modifiedAt;
 }

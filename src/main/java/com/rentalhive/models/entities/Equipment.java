@@ -52,7 +52,6 @@ public class Equipment {
     @NotNull(message = "Model is required")
     @ManyToOne
     private Model model;
-
     @JsonIgnore
     @CreatedDate
     private LocalDateTime createdAt;

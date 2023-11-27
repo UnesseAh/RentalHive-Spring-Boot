@@ -9,10 +9,9 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface EquipmentRepository extends JpaRepository<Equipment, Long> {
-    Equipment findByName(String name);
-    Equipment findBySerialNumber(String name);
-    List<Equipment> findByModel(Model model);
-    List<Equipment> findByPriceBetween(Double min, Double max);
+    List<Equipment> findAllByModelName(String modelName);
+    List<Equipment> findAllByModelFamilyName(String familyName);
+
     List<Equipment> findAllByIdIn( List<Long> ids);
 
 
@@ -21,4 +20,5 @@ public interface EquipmentRepository extends JpaRepository<Equipment, Long> {
             @Param("familyName") String familyName,
             @Param("modelName") String modelName
     );
+    Equipment findEquipmentBySerialNumber(String serialNumber);
 }

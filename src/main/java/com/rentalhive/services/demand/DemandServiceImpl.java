@@ -1,97 +1,133 @@
 package com.rentalhive.services.demand;
 
-import com.rentalhive.models.dto.DemandRequestDTO;
-import com.rentalhive.models.dto.DemandResponseDTO;
-import com.rentalhive.models.dto.EquipmentDemandRequestDTO;
+import com.rentalhive.handlers.exceptionHandler.OperationException;
+import com.rentalhive.handlers.exceptionHandler.ResourceNotFoundException;
 import com.rentalhive.models.entities.Demand;
 import com.rentalhive.models.entities.Equipment;
 import com.rentalhive.models.entities.EquipmentDemand;
-import com.rentalhive.models.enums.Status;
+import com.rentalhive.models.enums.DemandStatus;
 import com.rentalhive.repositories.DemandRepository;
 import com.rentalhive.repositories.EquipmentDemandRepository;
-import com.rentalhive.repositories.EquipmentRepository;
+import com.rentalhive.services.equipment.EquipmentService;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 
-import javax.transaction.Transactional;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
+
 import java.util.List;
 @Service
-@Transactional()
 public class DemandServiceImpl implements DemandService {
-    DemandRepository demandRepository;
-    EquipmentRepository equipmentRepository;
-    EquipmentDemandRepository equipmentDemandRepository;
-
-
-    public DemandServiceImpl(DemandRepository demandRepository, EquipmentRepository equipmentRepository, EquipmentDemandRepository equipmentDemandRepository) {
+    private final DemandRepository demandRepository;
+    private final EquipmentService equipmentService;
+    private final EquipmentDemandRepository equipmentDemandRepository;
+    public DemandServiceImpl(DemandRepository demandRepository, EquipmentService equipmentService, EquipmentDemandRepository equipmentDemandRepository) {
         this.demandRepository = demandRepository;
-        this.equipmentRepository = equipmentRepository;
+        this.equipmentService = equipmentService;
         this.equipmentDemandRepository = equipmentDemandRepository;
-
     }
     @Override
-    public DemandResponseDTO makeDemand(@Valid DemandRequestDTO demandRequestDTO){
-        List<Long> equipmentIds = demandRequestDTO.equipmentDemands().stream().map(EquipmentDemandRequestDTO::equipmentId).toList();
-        List<Equipment> equipmentList = equipmentRepository.findAllByIdIn(equipmentIds);
-        if(equipmentList.size() == equipmentIds.size() ){
-            Demand demand = demandRequestDTO.toDemand();
-            List<EquipmentDemand> equipmentDemands = demandRequestDTO.equipmentDemands().stream().map(equipmentDemandRequestDTO -> equipmentDemandRequestDTO.toEquipmentDemand(demand, equipmentList.get(equipmentIds.indexOf(equipmentDemandRequestDTO.equipmentId())))).toList();
-            demand.setEquipmentDemands(equipmentDemands);
-            return DemandResponseDTO.fromDemand(demandRepository.save(demand));
-        }else{
-            throw new RuntimeException("Some Equipments not found");
-        }
+    public Demand createDemand(Demand demand) {
+        List<EquipmentDemand> equipmentDemands = demand.getEquipmentDemands();
+        List<Long> equipmentIds = equipmentDemands.stream()
+                .map(equipmentDemand
+                        -> equipmentDemand.getEquipment().getId())
+                .toList();
+        equipmentIds.forEach(equipmentId -> {
+            Equipment equipment = equipmentService.getEquipmentById(equipmentId);
+            if(equipment == null){
+                throw new ResourceNotFoundException("Equipment id: " + equipmentId + " not found");
+            }
+            equipmentDemands.stream()
+                    .filter(equipmentDemand -> equipmentDemand.getEquipment().getId().equals(equipmentId))
+                    .forEach(equipmentDemand -> {
+                        equipmentDemand.setEquipment(equipment);
+                        equipmentDemand.setDemand(demand);
+                    });
+        });
+        Demand demand1 = demandRepository.save(demand);
+        equipmentDemandRepository.saveAll(equipmentDemands);
+        demand1.setEquipmentDemands(equipmentDemands);
+        return demand1;
     }
-    public List<DemandResponseDTO> getAllDemands(){
-        return demandRepository.findAll().stream().map(DemandResponseDTO::fromDemand).toList();
+    @Override
+    public Demand getDemandById(Long id) {
+        return demandRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Demand id: " + id + " not found"));
     }
-    public Boolean validateDemand(Long demandId){
-        if(demandId == null){
-            throw new IllegalArgumentException("Demand ID cannot be null");
+    @Override
+    public List<Demand> getAllDemands() {
+        return demandRepository.findAll();
+    }
+
+    @Override
+    public void deleteDemand(Long id) {
+        demandRepository.deleteById(id);
+    }
+    @Override
+    public Demand addEquipmentToDemand(Long demandId, EquipmentDemand equipmentDemand) {
+        Demand demand = getDemandById(demandId);
+        Equipment equipment = equipmentService.getEquipmentById(equipmentDemand.getEquipment().getId());
+         Integer eqdSize = equipmentDemandRepository.findAllByEquipment_Id(equipment.getId()).size();
+        if(eqdSize > 0){
+            throw new OperationException("Equipment with id: " + equipment.getId() + " is already in use");
         }
-        Demand demand = demandRepository.findById(demandId).orElseThrow(() -> new RuntimeException("Demand not found"));
-        demand.getEquipmentDemands().forEach(
-                equipmentDemand -> {
-                    List<EquipmentDemand> equipmentDemands = equipmentDemandRepository.getEquipmentDemandByIdAndRange(
-                            Status.ACCEPTED,
-                            equipmentDemand.getEquipment().getId(),
-                            equipmentDemand.getStartDate(),
-                            equipmentDemand.getEndDate()
-                    );
-                    if(equipmentDemands.size() > 0){
-                        throw new RuntimeException("This Equipment "+equipmentDemand.getEquipment().getSerialNumber()+" not available for now");
+        equipmentDemand.setEquipment(equipment);
+        equipmentDemand.setDemand(demand);
+        equipmentDemandRepository.save(equipmentDemand);
+        demand.setStatus(DemandStatus.IN_REVIEW);
+        return demandRepository.save(demand);
+    }
+    @Override
+    public Demand updateEquipmentInDemand(Long demandId, EquipmentDemand equipmentDemand) {
+        EquipmentDemand equipmentDemand1 = equipmentDemandRepository.findEquipmentDemandByEquipment_IdAndDemand_Id(equipmentDemand.getEquipment().getId(), demandId);
+        if(equipmentDemand1 == null){
+            throw new OperationException("Equipment demand with equipment id: " + equipmentDemand.getEquipment().getId() + " and demand id: " + demandId + " not found");
+        }
+        equipmentDemand1.setStartDate(equipmentDemand.getStartDate());
+        equipmentDemand1.setEndDate(equipmentDemand.getEndDate());
+        equipmentDemandRepository.save(equipmentDemand1);
+        Demand demand  = getDemandById(demandId);
+        demand.setStatus(DemandStatus.IN_REVIEW);
+        return demandRepository.save(demand);
+    }
+    @Override
+    public Demand deleteEquipmentFromDemand(Long demandId, Long equipmentDemandId) {
+        EquipmentDemand equipmentDemand = equipmentDemandRepository.findEquipmentDemandByEquipment_IdAndDemand_Id(equipmentDemandId, demandId);
+        if(equipmentDemand == null){
+            throw new OperationException("Equipment demand with equipment id: " + equipmentDemandId + " and demand id: " + demandId + " not found");
+        }
+        equipmentDemandRepository.delete(equipmentDemand);
+        return getDemandById(demandId);
+    }
+    @Override
+    public Demand validateDemand(Long id){
+        Demand demand = getDemandById(id);
+        if(demand.getStatus()==DemandStatus.IN_REVIEW) {
+            List<EquipmentDemand> equipmentDemands = demand.getEquipmentDemands();
+            equipmentDemands.forEach(
+                    eqd -> {
+                        List<EquipmentDemand> eqds = equipmentDemandRepository.getEquipmentDemandByIdAndRange(
+                                DemandStatus.PENDING_CONTRACT_CREATION,
+                                eqd.getEquipment().getId(),
+                                eqd.getStartDate(),
+                                eqd.getEndDate());
+                        if ( eqds.size() > 0 ) {
+                            throw new OperationException("Can't validate Demand ,Equipment with Serial Number: " + eqd.getEquipment().getSerialNumber() + " is all ready reserved on this date");
+                        }
                     }
-                }
-        );
-        return true;
-    }
-    public DemandResponseDTO acceptDemand(Long demandId){
-        validateDemand(demandId);
-        Demand demand = demandRepository.findById(demandId).orElseThrow(() -> new RuntimeException("Demand not found"));
-        demand.setStatus(Status.ACCEPTED);
-        return DemandResponseDTO.fromDemand(demandRepository.save(demand));
-    }
-    public DemandResponseDTO rejectDemand(Long demandId){
-        Demand demand = demandRepository.findById(demandId).orElseThrow(() -> new RuntimeException("Demand not found"));
-        demand.setStatus(Status.REJECTED);
-        return DemandResponseDTO.fromDemand(demandRepository.save(demand));
-    }
-    public DemandResponseDTO updateDemand(Long demandId, @Valid DemandRequestDTO demandRequestDTO){
-        demandRepository.findById(demandId).orElseThrow(() -> new RuntimeException("Demand not found"));
-        List<Long> equipmentIds = demandRequestDTO.equipmentDemands().stream().map(EquipmentDemandRequestDTO::equipmentId).toList();
-        List<Equipment> equipmentList = equipmentRepository.findAllByIdIn(equipmentIds);
-        if(equipmentList.size() == equipmentIds.size() ){
-            Demand demand = demandRequestDTO.toDemand();
-            demand.setId(demandId);
-            List<EquipmentDemand> equipmentDemands = demandRequestDTO.equipmentDemands().stream().map(equipmentDemandRequestDTO -> equipmentDemandRequestDTO.toEquipmentDemand(demand, equipmentList.get(equipmentIds.indexOf(equipmentDemandRequestDTO.equipmentId())))).toList();
-            demand.setEquipmentDemands(equipmentDemands);
-            return DemandResponseDTO.fromDemand(demandRepository.save(demand));
+            );
+            demand.setStatus(DemandStatus.PENDING_NEGOTIATION);
+            return demandRepository.save(demand);
         }else{
-            throw new RuntimeException("Some Equipments not found");
+            throw new OperationException("the Demand is All ready Validated");
         }
     }
-
-
+    @Override
+    public boolean isDemandValid(Long demandId){
+        Demand demand = getDemandById(demandId);
+        return demand.getStatus() != DemandStatus.IN_REVIEW;
+    }
+    @Override
+    public Demand changeDemandStatus(Long demandId, DemandStatus status){
+        Demand demand = getDemandById(demandId);
+        demand.setStatus(status);
+        return demandRepository.save(demand);
+    }
 }
