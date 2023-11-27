@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface FamilyRepository extends JpaRepository<Family, Long> {
-    Family findFamilyByName(String name);
+    Family findByName(String name);
 }

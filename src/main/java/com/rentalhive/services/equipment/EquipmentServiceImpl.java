@@ -12,6 +12,7 @@ import com.rentalhive.repositories.ModelRepository;
 import org.springframework.stereotype.Service;
 
 import javax.validation.Valid;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -143,4 +144,8 @@ public class EquipmentServiceImpl implements EquipmentService {
             throw new IllegalStateException("Equipment price is not a valid number");
         }
     }
+
+//    public void creatDemand(List<Long> equipmentIds, LocalDate startDate, LocalDate endDate){
+//
+//    }
 }

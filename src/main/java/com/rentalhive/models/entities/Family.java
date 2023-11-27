@@ -36,11 +36,9 @@ public class Family {
     @OneToMany(mappedBy = "family", fetch = FetchType.LAZY)
     private List<Model> modelList;
 
-    @JsonIgnore
     @CreatedDate
     private LocalDateTime createdAt;
 
-    @JsonIgnore
     @LastModifiedDate
     private LocalDateTime modifiedAt;
 

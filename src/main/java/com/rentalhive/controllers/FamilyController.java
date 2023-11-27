@@ -1,22 +1,30 @@
 package com.rentalhive.controllers;
 
+import com.rentalhive.handlers.response.ResponseMessage;
+import com.rentalhive.models.dto.FamilyDTO;
 import com.rentalhive.models.entities.Family;
 import com.rentalhive.services.family.FamilyService;
-import com.sun.xml.bind.v2.TODO;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/families")
 public class FamilyController {
-    @Autowired
-    private FamilyService familyService;
+    private final FamilyService familyService;
 
     @PostMapping
-    public Family createFamily(@RequestBody  Family family){
-        return familyService.createFamily(family);
+    public ResponseEntity<ResponseMessage> createFamily(@Valid @RequestBody FamilyDTO familyDTO){
+        FamilyDTO result = familyService.createFamily(familyDTO);
+        return new ResponseEntity<>(new ResponseMessage(HttpStatus.OK.value(),result,HttpStatus.OK.toString()),HttpStatus.OK);
+
     }
 
     @GetMapping
@@ -39,9 +47,9 @@ public class FamilyController {
         familyService.deleteFamily(id);
     }
 
-    // TODO: map request to string
-//    @PostMapping("/search")
-//    public Family findFamilyByName(String name){
-//        return familyService.searchFamilyByName(name);
-//    }
+    @PostMapping("/search")
+    public Optional<Family> findFamilyByName(@RequestBody FamilyDTO familyDTO){
+        Optional<Family> foundResult = familyService.searchFamilyByName(familyDTO);
+         return foundResult;
+    }
 }
