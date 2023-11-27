@@ -8,9 +8,9 @@ import java.util.Optional;
 
 public interface FamilyService {
     FamilyDTO createFamily(FamilyDTO familyDTO);
-    Family updateFamily(Long familyId, Family family);
+    FamilyDTO updateFamily(Long id, FamilyDTO newFamilyDTO);
     void deleteFamily(Long id);
-    Family getFamilyById(Long id);
-    List<Family> gelAllFamilies();
+    Optional<Family> getFamilyById(Long id);
+    List<FamilyDTO> gelAllFamilies();
     Optional<Family> searchFamilyByName(FamilyDTO familyDTO);
 }

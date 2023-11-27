@@ -21,30 +21,74 @@ public class FamilyController {
     private final FamilyService familyService;
 
     @PostMapping
-    public ResponseEntity<ResponseMessage> createFamily(@Valid @RequestBody FamilyDTO familyDTO){
-        FamilyDTO result = familyService.createFamily(familyDTO);
-        return new ResponseEntity<>(new ResponseMessage(HttpStatus.OK.value(),result,HttpStatus.OK.toString()),HttpStatus.OK);
-
+    public ResponseEntity<ResponseMessage> createFamily(
+            @Valid
+            @RequestBody
+            FamilyDTO familyDTO)
+    {
+        FamilyDTO createdFamily = familyService.createFamily(familyDTO);
+        return new ResponseEntity<>(new ResponseMessage(
+                HttpStatus.CREATED.value(),
+                createdFamily,
+                HttpStatus.CREATED.toString()),
+                HttpStatus.CREATED);
     }
 
     @GetMapping
-    public List<Family> getAllFamilies(){
-        return familyService.gelAllFamilies();
+    public ResponseEntity<ResponseMessage> getAllFamilies(){
+        List<FamilyDTO> families = familyService.gelAllFamilies();
+
+        if(families.isEmpty()){
+            return new ResponseEntity<>(new ResponseMessage(
+                    HttpStatus.NOT_FOUND.value(),
+                    HttpStatus.NOT_FOUND.toString()),
+                    HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(new ResponseMessage(
+                HttpStatus.FOUND.value(),
+                families,
+                HttpStatus.FOUND.toString()),
+                HttpStatus.FOUND);
     }
 
     @GetMapping("/{id}")
-    public Family getFamilyById(@PathVariable(value = "id") Long id){
-        return familyService.getFamilyById(id);
+    public ResponseEntity<ResponseMessage> getFamilyById(
+            @PathVariable(value = "id") Long id)
+    {
+        Optional<Family> foundFamily = familyService.getFamilyById(id);
+        if (foundFamily.isEmpty()){
+            return new ResponseEntity<>(new ResponseMessage(
+                    HttpStatus.NOT_FOUND.value(),
+                    HttpStatus.NOT_FOUND.toString()),
+                    HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(new ResponseMessage(
+                HttpStatus.FOUND.value(),
+                foundFamily,
+                HttpStatus.FOUND.toString()),
+                HttpStatus.FOUND);
     }
 
     @PutMapping("/{id}")
-    public Family updateFamily(@PathVariable(value = "id") Long id, @RequestBody Family family){
-        return familyService.updateFamily(id, family);
+    public ResponseEntity<ResponseMessage> updateFamily(
+            @PathVariable(value = "id") Long id,
+            @RequestBody FamilyDTO familyDTO)
+    {
+        FamilyDTO updatedFamily = familyService.updateFamily(id, familyDTO);
+        return new ResponseEntity<>(new ResponseMessage(
+                HttpStatus.CREATED.value(),
+                updatedFamily,
+                HttpStatus.CREATED.toString()),
+                HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteFamily(@PathVariable(value = "id") Long id){
+    public ResponseEntity<ResponseMessage> deleteFamily(@PathVariable(value = "id") Long id){
         familyService.deleteFamily(id);
+        return new ResponseEntity<>(new ResponseMessage(
+                HttpStatus.NO_CONTENT.value(),
+                HttpStatus.NO_CONTENT.toString()),
+                HttpStatus.NO_CONTENT);
     }
 
     @PostMapping("/search")
