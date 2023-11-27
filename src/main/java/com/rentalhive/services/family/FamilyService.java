@@ -6,9 +6,10 @@ import java.util.List;
 
 public interface FamilyService {
     Family createFamily(Family family);
-    Family updateFamily(Long familyId, Family family);
-    void deleteFamily(Long id);
     Family getFamilyById(Long id);
-    List<Family> gelAllFamilies();
-    Family searchFamilyByName(String name);
+    List<Family> getAllFamilies();
+    Family updateFamily(Long id,Family family);
+    void deleteFamily(Long id);
+    Family getFamilyByName(String name);
+
 }

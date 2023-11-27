@@ -1,15 +1,14 @@
-package com.rentalhive.models.dto;
+package com.rentalhive.controllers.vm;
 
 import com.rentalhive.models.entities.User;
 import com.rentalhive.models.enums.Role;
-import com.sun.istack.NotNull;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
 
-public record UserDTO(
+public record UserVM(
 
         @NotBlank(message = "Name is required")
         String name,
@@ -24,8 +23,8 @@ public record UserDTO(
         LocalDateTime createdAt,
         LocalDateTime modifiedAt
 ) {
-    public static UserDTO fromUser(User user) {
-        return new UserDTO(user.getName(), user.getEmail(), user.getPhoneNumber(), user.getRole().toString(),user.getCreatedAt(),user.getModifiedAt());
+    public static UserVM fromUser(User user) {
+        return new UserVM(user.getName(), user.getEmail(), user.getPhoneNumber(), user.getRole().toString(),user.getCreatedAt(),user.getModifiedAt());
     }
     public User toUser() {
         return new User().builder()

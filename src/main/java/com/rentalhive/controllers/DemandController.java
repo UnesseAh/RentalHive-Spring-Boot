@@ -1,17 +1,21 @@
 package com.rentalhive.controllers;
 
+import com.rentalhive.controllers.vm.DemandResponseVM;
+import com.rentalhive.controllers.vm.EquipmentDemandRequestVM;
 import com.rentalhive.handlers.response.ResponseMessage;
-import com.rentalhive.models.dto.DemandRequestDTO;
-import com.rentalhive.models.dto.DemandResponseDTO;
+import com.rentalhive.controllers.vm.DemandRequestVM;
+import com.rentalhive.models.entities.Demand;
+import com.rentalhive.models.entities.EquipmentDemand;
 import com.rentalhive.services.demand.DemandService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
-@RequestMapping("/api/demands")
+@RequestMapping("/api/v1/demands")
 public class DemandController {
     DemandService demandService;
 
@@ -20,28 +24,56 @@ public class DemandController {
     }
 
     @PostMapping()
-    public ResponseEntity<DemandResponseDTO> createDemand(@Valid @RequestBody DemandRequestDTO demandRequestDTO){
-        return ResponseEntity.ok(demandService.makeDemand(demandRequestDTO));
+    public ResponseEntity<ResponseMessage> createDemand(@Valid @RequestBody DemandRequestVM demandRequestDTO){
+        Demand demand = demandRequestDTO.toDemand();
+        List<EquipmentDemand> equipmentDemands = demandRequestDTO.equipmentDemands().stream().map(eqd -> eqd.toEquipmentDemand()).toList();
+        demand.setEquipmentDemands(equipmentDemands);
+        demand = demandService.createDemand(demand);
+        DemandResponseVM demandResponseDTO = DemandResponseVM.fromDemand(demand);
+        return ResponseMessage.created(demandResponseDTO,
+                "Demand created successfully");
     }
-    @GetMapping("/{demandId}/validate")
-    public ResponseEntity<ResponseMessage> validateDemand(@PathVariable Long demandId){
-        return ResponseEntity.ok(new ResponseMessage(HttpStatus.OK.value(), demandService.validateDemand(demandId)?"Demand is valid":"Demand is not valid"));
-    }
+
     @GetMapping()
     public ResponseEntity getAllDemands(){
-        return ResponseEntity.ok(new ResponseMessage(HttpStatus.OK.value(), demandService.getAllDemands(),HttpStatus.OK.getReasonPhrase()));
+        List<Demand> demands = demandService.getAllDemands();
+        if ( demands == null ){
+            return ResponseMessage.notFound("No demands found");
+        }
+        List<DemandResponseVM> demandResponseDTOs = demands.stream().map(demand -> DemandResponseVM.fromDemand(demand)).toList();
+        return ResponseMessage.ok(demandResponseDTOs,
+                "Demands retrieved successfully");
     }
-    @PutMapping("/{demandId}/accept")
-    public ResponseEntity<DemandResponseDTO> acceptDemand(@PathVariable Long demandId){
-        return ResponseEntity.ok(demandService.acceptDemand(demandId));
+    @PostMapping("/{demandId}/equipment")
+    public ResponseEntity<ResponseMessage> addEquipmentToDemand(@PathVariable Long demandId, @RequestBody EquipmentDemandRequestVM eqdVM){
+        EquipmentDemand equipmentDemand = eqdVM.toEquipmentDemand();
+        Demand demand = demandService.addEquipmentToDemand(demandId, equipmentDemand);
+        DemandResponseVM demandResponseDTO = DemandResponseVM.fromDemand(demand);
+        return ResponseMessage.created(demandResponseDTO,
+                "Equipment Demand created successfully");
     }
-    @PutMapping("/{demandId}/reject")
-    public ResponseEntity<DemandResponseDTO> rejectDemand(@PathVariable Long demandId){
-        return ResponseEntity.ok(demandService.rejectDemand(demandId));
+    @PutMapping("/{demandId}/equipment")
+    public ResponseEntity<ResponseMessage> updateEquipmentInDemand(@PathVariable Long demandId, @RequestBody EquipmentDemandRequestVM eqdVM){
+        EquipmentDemand equipmentDemand = eqdVM.toEquipmentDemand();
+        Demand demand = demandService.updateEquipmentInDemand(demandId, equipmentDemand);
+        DemandResponseVM demandResponseDTO = DemandResponseVM.fromDemand(demand);
+        return ResponseMessage.ok(demandResponseDTO,
+                "Equipment Demand updated successfully");
     }
-    @PutMapping("/{demandId}")
-public ResponseEntity<DemandResponseDTO> updateDemand(@PathVariable Long demandId, @Valid @RequestBody DemandRequestDTO demandRequestDTO){
-        return ResponseEntity.ok(demandService.updateDemand(demandId, demandRequestDTO));
+    @DeleteMapping("/{demandId}/equipment/{equipmentId}")
+    public ResponseEntity<ResponseMessage> deleteEquipmentFromDemand(@PathVariable Long demandId, @PathVariable Long equipmentId){
+        Demand demand = demandService.deleteEquipmentFromDemand(demandId, equipmentId);
+        DemandResponseVM demandResponseVM = DemandResponseVM.fromDemand(demand);
+        return ResponseMessage.ok(demandResponseVM,
+                "Equipment Demand deleted successfully");
+    }
+    @PutMapping("/{demandId}/validate")
+    public ResponseEntity validateDemand(@PathVariable Long demandId){
+        Demand demand = demandService.validateDemand(demandId);
+        DemandResponseVM demandResponseVM = DemandResponseVM.fromDemand(demand);
+        return ResponseMessage.ok(demandResponseVM,
+                "Demand has been validated successfully");
+
     }
 
 }

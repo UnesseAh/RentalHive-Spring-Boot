@@ -8,10 +8,12 @@ import java.util.List;
 
 public interface ModelService {
     Model createModel(Model model);
-    Model updateModel(Long modelId, Model model);
-    void deleteModel(Long id);
     Model getModelById(Long id);
-    List<Model> gelAllModels();
-    List<Model> searchModelsByName(String name);
-    List<Model> searchModelsByFamily(Family family);
+    List<Model> getAllModels();
+    Model updateModel(Long id,Model model);
+    void deleteModel(Long id);
+    List<Model> getAllModelsByFamily(String familyName);
+    Model getModelByName(String name);
+    Model getModelByNameAndFamilyName(String name, String familyName);
+
 }

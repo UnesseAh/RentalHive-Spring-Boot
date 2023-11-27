@@ -28,14 +28,20 @@ public class MainExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> notValid(MethodArgumentNotValidException ex, WebRequest request) {
         List<String> errors = new ArrayList<>();
-
         ex.getAllErrors().forEach(err -> errors.add(err.getDefaultMessage()));
-
         Map<String, List<String>> result = new HashMap<>();
         result.put("errors", errors);
 
         return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
 
+    }
+    @ExceptionHandler(OperationException.class)
+    public ResponseEntity<ResponseMessage> operationException(OperationException ex, WebRequest request) {
+        ResponseMessage message = new ResponseMessage(
+                HttpStatus.BAD_REQUEST.value(),
+                ex.getMessage());
+
+        return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(Exception.class)
@@ -45,5 +51,7 @@ public class MainExceptionHandler {
                 ex.getMessage());
 
         return new ResponseEntity<>(message, HttpStatus.INTERNAL_SERVER_ERROR);
+
     }
+
 }

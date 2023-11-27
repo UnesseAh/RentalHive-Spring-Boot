@@ -19,7 +19,7 @@ public class ModelSeeder {
         this.familyRepository = familyRepository;
     }
     public void seed(){
-        List<String> modelsOfFamily = List.of("Cat","Scania","Volvo","JCB","Hitachi","Komatsu","Kobelco","Hyundai","Doosan","Sany","XCMG","Liebherr","Kato","Tadano","Terex","Zoomlion");
+        List<String> modelsOfFamily = List.of("Cat","Scania","Volvo","JCB","Hitachi","Komatsu","Kobelco");
               familyRepository.findAll().forEach(family -> {
                   modelsOfFamily.forEach(modelName -> {
                       modelRepository.save(modelFaker.makeModel(family,modelName));

@@ -1,24 +1,22 @@
-package com.rentalhive.models.dto;
+package com.rentalhive.controllers.vm;
 
 import com.rentalhive.models.entities.Demand;
 import com.rentalhive.models.entities.Equipment;
 import com.rentalhive.models.entities.EquipmentDemand;
-import jdk.jfr.Timestamp;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
-public record EquipmentDemandRequestDTO(
+public record EquipmentDemandRequestVM(
         @NotNull(message = "EquipmentId cannot be null")
         Long equipmentId,
         LocalDate startDate,
         @NotNull(message = "EndDate cannot be null")
         LocalDate endDate
 ) {
-    public EquipmentDemand toEquipmentDemand(Demand demand, Equipment equipment){
+    public EquipmentDemand toEquipmentDemand(){
         return new EquipmentDemand().builder()
-                .demand(demand)
-                .equipment(equipment)
+                .equipment(Equipment.builder().id(equipmentId).build())
                 .startDate(startDate)
                 .endDate(endDate)
                 .build();

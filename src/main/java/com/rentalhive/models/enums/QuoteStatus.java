@@ -1,6 +1,6 @@
 package com.rentalhive.models.enums;
 
-public enum Status {
+public enum QuoteStatus {
     PENDING,
     ACCEPTED,
     REJECTED,

@@ -1,15 +1,21 @@
 package com.rentalhive.services.demand;
 
-import com.rentalhive.models.dto.DemandRequestDTO;
-import com.rentalhive.models.dto.DemandResponseDTO;
+
+import com.rentalhive.models.entities.Demand;
+import com.rentalhive.models.entities.EquipmentDemand;
+import com.rentalhive.models.enums.DemandStatus;
 
 import java.util.List;
 
 public interface DemandService {
-    public DemandResponseDTO makeDemand(DemandRequestDTO demandRequestDTO);
-    public List<DemandResponseDTO> getAllDemands();
-    public Boolean validateDemand(Long demandId);
-    public DemandResponseDTO acceptDemand(Long demandId);
-    public DemandResponseDTO rejectDemand(Long demandId);
-    public DemandResponseDTO updateDemand(Long demandId, DemandRequestDTO demandRequestDTO);
+    Demand createDemand(Demand demand);
+    Demand getDemandById(Long id);
+    List<Demand> getAllDemands();
+    Demand addEquipmentToDemand(Long demandId, EquipmentDemand equipmentDemand);
+    Demand updateEquipmentInDemand(Long demandId, EquipmentDemand equipmentDemand);
+    Demand deleteEquipmentFromDemand(Long demandId, Long equipmentDemandId);
+    void deleteDemand(Long id);
+    Demand validateDemand(Long demandId);
+    boolean isDemandValid(Long demandId);
+    Demand changeDemandStatus(Long demandId, DemandStatus status);
 }
