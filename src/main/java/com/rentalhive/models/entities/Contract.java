@@ -1,8 +1,11 @@
 package com.rentalhive.models.entities;
+import com.rentalhive.models.enums.ContractStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -14,16 +17,17 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Offer {
+public class Contract {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @OneToOne
-    private Demand demand;
+    private Invoice invoice;
     @OneToOne
-    private Quote quote;
+    private Demand demand;
     private String description;
-    @CreatedDate
+    private ContractStatus status;
+    @CreationTimestamp
     private LocalDateTime createdAt;
-    @LastModifiedDate
+    @UpdateTimestamp
     private LocalDateTime modifiedAt;
 }

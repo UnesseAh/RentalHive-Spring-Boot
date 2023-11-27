@@ -1,13 +1,9 @@
-package com.rentalhive.models.dto;
+package com.rentalhive.controllers.vm;
 
-import javax.persistence.Cache;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Calendar;
 
-public record EquipmentSearchDTO(
+public record EquipmentSearchVM(
         String familyName,
         String modelName,
         @NotNull(message = "Start date is required")
