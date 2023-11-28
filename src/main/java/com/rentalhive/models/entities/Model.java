@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.Builder;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -23,8 +24,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@EntityListeners({AuditingEntityListener.class})
-@Table(name = "models")
 @Entity
 public class Model {
     @Id
@@ -41,12 +40,8 @@ public class Model {
     @JsonIgnore
     @OneToMany(mappedBy = "model" , fetch = FetchType.LAZY)
     private List<Equipment> equipmentList;
-
-    @JsonIgnore
-    @CreatedDate
+    @CreationTimestamp
     private LocalDateTime createdAt;
-
-    @JsonIgnore
-    @LastModifiedDate
+    @CreationTimestamp
     private LocalDateTime modifiedAt;
 }

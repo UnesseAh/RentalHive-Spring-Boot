@@ -8,6 +8,9 @@ public record EquipmentResponseVM(
         String serialNumber,
         String familyName,
         String modelName,
+        String condition,
+        String color,
+        String fuel,
         Double price,
         String description
       ) {
@@ -18,6 +21,9 @@ public record EquipmentResponseVM(
                 equipment.getSerialNumber(),
                 equipment.getModel().getFamily().getName(),
                 equipment.getModel().getName(),
+                equipment.getVehicleCondition().name(),
+                equipment.getColor(),
+                equipment.getFuel().name(),
                 equipment.getPrice(),
                 equipment.getDescription()
         );

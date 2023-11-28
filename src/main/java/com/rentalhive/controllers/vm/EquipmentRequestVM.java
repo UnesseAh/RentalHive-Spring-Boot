@@ -3,6 +3,8 @@ package com.rentalhive.controllers.vm;
 import com.rentalhive.models.entities.Equipment;
 import com.rentalhive.models.entities.Family;
 import com.rentalhive.models.entities.Model;
+import com.rentalhive.models.enums.EquipmentCondition;
+import com.rentalhive.models.enums.EquipmentFuel;
 
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotBlank;
@@ -19,6 +21,11 @@ public record EquipmentRequestVM(
         String familyName,
         @NotBlank(message = "serial number cannot be null")
         String serialNumber,
+        @NotBlank(message = "vehicle condition cannot be null")
+        @Pattern(regexp = "^(NEW|USED)$", message = "vehicle condition must be new or used")
+        String condition,
+        String color,
+        String fuel,
         @NotBlank(message = "description cannot be null")
         String description
 ) {
@@ -28,6 +35,9 @@ public record EquipmentRequestVM(
                         .name(name)
                         .serialNumber(serialNumber)
                         .description(description)
+                        .vehicleCondition(EquipmentCondition.valueOf(condition))
+                        .color(color)
+                        .fuel(EquipmentFuel.valueOf(fuel))
                         .model(Model.builder()
                                 .name(modelName)
                                 .family(Family.builder()

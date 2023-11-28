@@ -9,10 +9,11 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Setter
+@Getter
 public class Demand {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,7 +25,7 @@ public class Demand {
     private String description;
     @ManyToOne(cascade = CascadeType.ALL)
     private User user;
-    @OneToOne
+    @OneToOne(mappedBy = "demand")
     private Contract contract;
     private DemandStatus status;
     @CreationTimestamp

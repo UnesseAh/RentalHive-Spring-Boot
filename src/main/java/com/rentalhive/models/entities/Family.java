@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.Builder;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -21,8 +23,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@EntityListeners({AuditingEntityListener.class})
-@Table(name = "families", uniqueConstraints = {@UniqueConstraint(columnNames = {"name"})})
 @Entity
 public class Family {
     @Id
@@ -31,17 +31,11 @@ public class Family {
 
     @NotBlank(message = "Name is mandatory")
     private String name;
-
-    @JsonIgnore
     @OneToMany(mappedBy = "family", fetch = FetchType.LAZY)
     private List<Model> modelList;
-
-    @JsonIgnore
-    @CreatedDate
+    @CreationTimestamp
     private LocalDateTime createdAt;
-
-    @JsonIgnore
-    @LastModifiedDate
+    @UpdateTimestamp
     private LocalDateTime modifiedAt;
 
 }
