@@ -11,7 +11,8 @@ public record DemandResponseVM(
         UserVM user,
         String status,
         List<EquipmentDemandResponseVM> equipmentDemands,
-        List<QuoteResponseVM> quotes
+        List<QuoteResponseVM> quotes,
+        ContractResponseVM contract
 ) {
     public static DemandResponseVM fromDemand(Demand demand){
         return new DemandResponseVM(
@@ -21,7 +22,8 @@ public record DemandResponseVM(
                 UserVM.fromUser(demand.getUser()),
                 demand.getStatus().toString(),
                 demand.getEquipmentDemands()!=null?demand.getEquipmentDemands().stream().map(EquipmentDemandResponseVM::fromEquipmentDemand).toList():null,
-                demand.getQuotes()!=null?demand.getQuotes().stream().map(QuoteResponseVM::fromQuote).toList():null
+                demand.getQuotes()!=null?demand.getQuotes().stream().map(QuoteResponseVM::fromQuote).toList():null,
+                demand.getContract()!=null?ContractResponseVM.fromContract(demand.getContract()):null
         );
     }
 }

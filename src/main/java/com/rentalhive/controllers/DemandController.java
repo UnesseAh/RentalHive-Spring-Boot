@@ -75,5 +75,12 @@ public class DemandController {
                 "Demand has been validated successfully");
 
     }
+    @GetMapping("/{demandId}")
+    public ResponseEntity getDemandById(@PathVariable Long demandId){
+        Demand demand = demandService.getDemandById(demandId);
+        DemandResponseVM demandResponseVM = DemandResponseVM.fromDemand(demand);
+        return ResponseMessage.ok(demandResponseVM,
+                "Demand retrieved successfully");
+    }
 
 }
