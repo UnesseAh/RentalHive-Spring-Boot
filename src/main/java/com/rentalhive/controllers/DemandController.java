@@ -3,6 +3,8 @@ package com.rentalhive.controllers;
 import com.rentalhive.handlers.response.ResponseMessage;
 import com.rentalhive.models.dto.DemandRequestDTO;
 import com.rentalhive.models.dto.DemandResponseDTO;
+import com.rentalhive.models.dto.ReservationRequestDTO;
+import com.rentalhive.models.entities.Demand;
 import com.rentalhive.services.demand.DemandService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,4 +33,11 @@ public class DemandController {
     public ResponseEntity getAllDemands(){
         return ResponseEntity.ok(demandService.getAllDemands());
     }
+
+    @PostMapping("/reservation")
+    public ResponseEntity<Demand> createReservation(@RequestBody ReservationRequestDTO reservationRequestDTO){
+        Demand demand =  demandService.createReservation(reservationRequestDTO);
+        return ResponseEntity.ok(demand);
+    }
+
 }

@@ -18,7 +18,7 @@ import java.util.List;
 public class Demand {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToMany(mappedBy = "demand", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "demand", cascade = CascadeType.ALL)
     private List<EquipmentDemand> equipmentDemands;
     private String title;
     private String description;

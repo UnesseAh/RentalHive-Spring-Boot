@@ -1,8 +1,6 @@
 package com.rentalhive.services.demand;
 
-import com.rentalhive.models.dto.DemandRequestDTO;
-import com.rentalhive.models.dto.DemandResponseDTO;
-import com.rentalhive.models.dto.EquipmentDemandRequestDTO;
+import com.rentalhive.models.dto.*;
 import com.rentalhive.models.entities.Demand;
 import com.rentalhive.models.entities.Equipment;
 import com.rentalhive.models.entities.EquipmentDemand;
@@ -68,6 +66,12 @@ public class DemandServiceImpl implements DemandService {
         return true;
 
 
+    }
+
+    @Override
+    public Demand createReservation(ReservationRequestDTO reservationRequestDTO) {
+        Demand demand = reservationRequestDTO.toDemand();
+        return demandRepository.save(demand);
     }
 
 

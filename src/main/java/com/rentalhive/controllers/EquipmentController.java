@@ -4,6 +4,7 @@ import com.rentalhive.handlers.response.ResponseMessage;
 import com.rentalhive.models.entities.Equipment;
 import com.rentalhive.models.entities.Model;
 import com.rentalhive.services.equipment.EquipmentService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.rentalhive.models.dto.EquipmentResponseDTO;
 import com.rentalhive.models.dto.EquipmentSearchDTO;
@@ -16,11 +17,11 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/equipments")
 public class EquipmentController {
 
-    @Autowired
-    private EquipmentService equipmentService;
+    private final EquipmentService equipmentService;
 
     @PostMapping
     public Equipment createEquipment(@RequestBody @Valid Equipment equipment){
