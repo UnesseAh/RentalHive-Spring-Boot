@@ -1,5 +1,6 @@
 package com.rentalhive.services.demand;
 
+import com.rentalhive.handlers.exceptionHandler.ResourceNotFoundException;
 import com.rentalhive.models.dto.*;
 import com.rentalhive.models.entities.Demand;
 import com.rentalhive.models.entities.Equipment;
@@ -8,12 +9,14 @@ import com.rentalhive.models.enums.Status;
 import com.rentalhive.repositories.DemandRepository;
 import com.rentalhive.repositories.EquipmentDemandRepository;
 import com.rentalhive.repositories.EquipmentRepository;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 @Service
 @Transactional()
@@ -71,6 +74,19 @@ public class DemandServiceImpl implements DemandService {
     @Override
     public Demand createReservation(ReservationRequestDTO reservationRequestDTO) {
         Demand demand = reservationRequestDTO.toDemand();
+
+        List<EquipmentDemand> equipmentDemands = new ArrayList<>();
+        for(EquipmentReservationRequestDTO equipmentToReserve : reservationRequestDTO.equipmentReservations()){
+            Equipment equipment =  equipmentRepository.findById(equipmentToReserve.equipmentId())
+                    .orElseThrow(() -> new ResourceNotFoundException("equipment not found" + equipmentToReserve.equipmentId()));
+            EquipmentDemand equipmentDemand = new EquipmentDemand();
+            equipmentDemand.setEquipment(equipment);
+            equipmentDemand.setStartDate(equipmentToReserve.startDate());
+            equipmentDemand.setEndDate(equipmentToReserve.endDate());
+            equipmentDemands.add(equipmentDemand);
+        }
+        demand.setEquipmentDemands(equipmentDemands);
+
         return demandRepository.save(demand);
     }
 
