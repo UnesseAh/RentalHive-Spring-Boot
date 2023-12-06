@@ -4,16 +4,21 @@ import com.rentalhive.controllers.vm.QuoteRequestVM;
 import com.rentalhive.controllers.vm.QuoteResponseVM;
 import com.rentalhive.handlers.response.ResponseMessage;
 import com.rentalhive.models.entities.Quote;
+
 import com.rentalhive.services.quote.QuoteService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.File;
 
 @RestController
 @RequestMapping("/api/v1/quotes")
 public class QuoteController {
     QuoteService quoteService;
+
     public QuoteController(QuoteService quoteService) {
         this.quoteService = quoteService;
+
     }
     @PostMapping
     public ResponseEntity createQuote(@RequestBody QuoteRequestVM quoteRequestVM){
@@ -39,5 +44,4 @@ public class QuoteController {
         return ResponseMessage.ok(QuoteResponseVM.fromQuote(quote),
                 "Quote rejected successfully");
     }
-
 }
