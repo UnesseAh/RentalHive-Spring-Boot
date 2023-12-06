@@ -1,5 +1,6 @@
 package com.rentalhive.models.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -36,10 +37,6 @@ public class Model {
     @ManyToOne()
     @NotNull(message = "Family is mandatory")
     private Family family;
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "model" , fetch = FetchType.LAZY)
-    private List<Equipment> equipmentList;
     @CreationTimestamp
     private LocalDateTime createdAt;
     @CreationTimestamp
